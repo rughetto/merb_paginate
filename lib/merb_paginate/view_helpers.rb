@@ -31,7 +31,8 @@ module MerbPaginate
       :params       => nil,
       :renderer     => 'MerbPaginate::LinkRenderer',
       :page_links   => true,
-      :container    => true
+      :container    => true,
+      :namespace    => nil
     }
     
     # there is not mattr_accessor here and it's not a big deal to just make these two getter/setter methods for now
@@ -187,7 +188,11 @@ module MerbPaginate
     end
     
     def url_options_string(page)
-      @template.url(url_options(page))
+      if @options[:namespace].nil?
+        @template.url(url_options(page))
+      else
+        @template.url(@options[:namespace], url_options(page))
+      end
     end
 
   private
