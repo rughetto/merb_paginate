@@ -178,6 +178,8 @@ module MerbPaginate
       end
     end
 
+    # TODO: I am not sure if I like the way this is working. It will always do /posts/index?page=1 for page one when it could do /
+    # Would be nice if it was smarter
     def url_options(page)
       options = { param_name => page }
       # page links should preserve GET parameters
