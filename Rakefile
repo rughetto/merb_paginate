@@ -9,7 +9,7 @@ GEM_VERSION = "0.0.3"
 AUTHOR = "Nathan Herald"
 EMAIL = "nathan@myobie.com"
 HOMEPAGE = "http://github.com/myobie/merb_paginate"
-SUMMARY = "A blatant rip-off of will_paginate to bring pagination to merb"
+SUMMARY = "A pagination library for Merb that uses will_paginate internally"
 
 windows = (PLATFORM =~ /win32|cygwin/)
 
@@ -27,6 +27,7 @@ spec = Gem::Specification.new do |s|
   s.email = EMAIL
   s.homepage = HOMEPAGE
   s.add_dependency("merb-core", ">=0.9")
+  s.add_dependency("will_paginate", ">=2.1.0")
   s.require_path = 'lib'
   s.autorequire = PLUGIN
   s.files = %w(LICENSE README Rakefile TODO) + Dir.glob("{lib,specs}/**/*")
