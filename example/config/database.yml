@@ -2,15 +2,15 @@
 # This is a sample database file for the DataMapper ORM
 :development: &defaults
   :adapter: sqlite3
-  :database: example_development
+  :database: db/example_development.sqlite3
   :log_stream: STDOUT
   :log_level: 0
 
 :test:
   <<: *defaults
-  :database: example_test
+  :database: db/example_test.sqlite3
 
 :production:
   <<: *defaults
-  :database: example_production
+  :database: db/example_production.sqlite3
   :log_stream: nil
