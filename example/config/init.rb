@@ -11,7 +11,7 @@ use_orm :datamapper
 
 use_test :rspec
 
-dependency :merb_paginate
+dependency 'merb_paginate'
 
 Merb::BootLoader.after_app_loads do
 end
