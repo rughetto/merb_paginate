@@ -26,7 +26,7 @@ sudo rake install
 Example App
 ===========
 
-An example app is not included in the example folder. It comes with a sqlite3
+An example app is now included in the example folder. It comes with a sqlite3
 database that has some posts already in it. I am not sure if the db is cross-
 platform, let me know.
 
