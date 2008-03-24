@@ -1,3 +1,5 @@
+# This file is very merb specific, but it only includes the ViewHelpers module if merb is already loaded
+
 require 'merb_paginate/core_ext'
 
 module MerbPaginate
@@ -210,6 +212,7 @@ module MerbPaginate
   end
 end
 
+if const_defined? "Merb::Controller"
 Merb::Controller.class_eval do
   include MerbPaginate::ViewHelpers
 end
