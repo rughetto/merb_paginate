@@ -6,12 +6,13 @@
 merb_paginate
 =============
 
-Pagination that relies on the awesome code of the will_paginate gem.
+Pagination that relies on the awesomeness that is the will_paginate gem.
 http://errtheblog.com/posts/56-im-paginating-again
 
 Lots of credit goes to those dudes. It's a fantastic plugin, it just is too 
 rails centric to use with merb out of the box. A lot of things had to be 
-changed to not rely on the magicness of rails.
+changed to not rely on the magicness of rails (which is why it's not a fork 
+of the project).
 
 This merb plugin is very incomplete and has no specs (Hint: contribute!).
 
@@ -22,6 +23,13 @@ git clone git://github.com/myobie/merb_paginate.git
 cd merb_paginate
 sudo rake install
 
+Example App
+===========
+
+An example app is not included in the example folder. It comes with a sqlite3
+database that has some posts already in it. I am not sure if the db is cross-
+platform, let me know.
+
 Usage
 =====
 
@@ -29,15 +37,23 @@ Using this plugin is like so in init.rb:
 
   dependency 'merb_paginate'
 
-Right now, DataMapper is the only support ORM. I hope to have a paginate finder 
-for each orm evenutally. (Hint: contribute!)
+Right now, DataMapper is the only supported ORM (Sequel might work, let me know). 
+I hope to have a paginate finder for each orm evenutally. (Hint: contribute!)
+
+Using the view helper is like so:
+
+  <%= merb_paginate @posts %>
+
+It is almost exactly like will_paginate, except not as smart about the current controller.
 
 
 
 Note
 ----
-
 I am thinking of rewriting this to use the paginator gem, since it is already generic 
 and not tied to any ORM or anything. I am very comfortable with the will_paginate code, 
 so I am biased to use it, but I want to get some feedback about the paginator gem and 
 if it's a good idea?
+
+I am pretty happy with how this is working now, but if someone has any better ideas,
+please pass them along. Or better yet, fork and then make it work.
