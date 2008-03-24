@@ -212,7 +212,8 @@ module MerbPaginate
   end
 end
 
-if const_defined? "Merb::Controller"
-Merb::Controller.class_eval do
-  include MerbPaginate::ViewHelpers
+if Object.const_defined? "Merb"
+  Merb::Controller.class_eval do
+    include MerbPaginate::ViewHelpers
+  end
 end

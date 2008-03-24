@@ -1,4 +1,4 @@
-require 'lib/merb_paginate/finders/generic'
+require 'merb_paginate/finders/generic'
 
 module MerbPaginate
   module Finders

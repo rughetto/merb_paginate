@@ -8,6 +8,11 @@ def mattr_reader(*syms)
   end
 end
 
+def returning(value)
+  yield(value)
+  value
+end
+
 # copied from will_paginate
 unless Hash.instance_methods.include? 'except'
   Hash.class_eval do
