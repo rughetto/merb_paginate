@@ -1,7 +1,7 @@
 class Posts < Application
   
   def index
-    @posts = Post.all
+    @posts = Post.paginate
     render
   end
   
