@@ -1,4 +1,6 @@
-require 'will_paginate'
+# This is all directly copied from the will_paginate gem v2.1.0
+#
+# require 'will_paginate' # we don't need this in merb land
  
 module WillPaginate
   # = OMG, invalid page number!
