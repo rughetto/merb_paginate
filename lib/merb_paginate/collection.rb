@@ -1,13 +1,13 @@
-require 'merb_paginate'
-
-module MerbPaginate
+require 'will_paginate'
+ 
+module WillPaginate
   # = OMG, invalid page number!
   # This is an ArgumentError raised in case a page was requested that is either
   # zero or negative number. You should decide how do deal with such errors in
   # the controller.
   #
   # This error is *not* raised when a page further than the last page is
-  # requested. Use <tt>MerbPaginate::Collection#out_of_bounds?</tt> method to
+  # requested. Use <tt>WillPaginate::Collection#out_of_bounds?</tt> method to
   # check for those cases and manually deal with them as you see fit.
   class InvalidPage < ArgumentError
     def initialize(page, page_num)
@@ -16,16 +16,16 @@ module MerbPaginate
   end
   
   # Arrays returned from paginating finds are, in fact, instances of this.
-  # You may think of MerbPaginate::Collection as an ordinary array with some
+  # You may think of WillPaginate::Collection as an ordinary array with some
   # extra properties. Those properties are used by view helpers to generate
   # correct page links.
   #
-  # MerbPaginate::Collection also assists in rolling out your own pagination
+  # WillPaginate::Collection also assists in rolling out your own pagination
   # solutions: see +create+.
   #
   class Collection < Array
     attr_reader :current_page, :per_page, :total_entries
-
+ 
     # Arguments to this constructor are the current page number, per-page limit
     # and the total number of entries. The last argument is optional because it
     # is best to do lazy counting; in other words, count *conditionally* after
@@ -39,11 +39,11 @@ module MerbPaginate
       
       self.total_entries = total if total
     end
-
+ 
     # Just like +new+, but yields the object after instantiation and returns it
     # afterwards. This is very useful for manual pagination:
     #
-    #   @entries = MerbPaginate::Collection.create(1, 10) do |pager|
+    #   @entries = WillPaginate::Collection.create(1, 10) do |pager|
     #     result = Post.find(:all, :limit => pager.per_page, :offset => pager.offset)
     #     # inject the result array into the paginated collection:
     #     pager.replace(result)
@@ -55,11 +55,11 @@ module MerbPaginate
     #   end
     #
     # The possibilities with this are endless. For another example, here is how
-    # MerbPaginate used to define pagination for Array instances:
+    # WillPaginate used to define pagination for Array instances:
     #
     #   Array.class_eval do
     #     def paginate(page = 1, per_page = 15)
-    #       MerbPaginate::Collection.create(page, per_page, size) do |pager|
+    #       WillPaginate::Collection.create(page, per_page, size) do |pager|
     #         pager.replace self[pager.offset, pager.per_page].to_a
     #       end
     #     end
@@ -70,19 +70,19 @@ module MerbPaginate
       yield pager
       pager
     end
-
+ 
     # The total number of pages.
     def page_count
       @total_pages
     end
-
+ 
     # Helper method that is true when someone tries to fetch a page with a
     # larger number than the last page. Can be used in combination with flashes
     # and redirecting.
     def out_of_bounds?
       current_page > page_count
     end
-
+ 
     # Current offset of the paginated collection. If we're on the first page,
     # it is always 0. If we're on the 2nd page and there are 30 entries per page,
     # the offset is 30. This property is useful if you want to render ordinals
@@ -91,22 +91,22 @@ module MerbPaginate
     def offset
       (current_page - 1) * per_page
     end
-
+ 
     # current_page - 1 or nil if there is no previous page
     def previous_page
       current_page > 1 ? (current_page - 1) : nil
     end
-
+ 
     # current_page + 1 or nil if there is no next page
     def next_page
       current_page < page_count ? (current_page + 1) : nil
     end
-
+ 
     def total_entries=(number)
       @total_entries = number.to_i
       @total_pages   = (@total_entries / per_page.to_f).ceil
     end
-
+ 
     # This is a magic wrapper for the original Array#replace method. It serves
     # for populating the paginated collection after initialization.
     #
@@ -120,13 +120,13 @@ module MerbPaginate
     # +total_entries+ and set it to a proper value if it's +nil+. See the example
     # in +create+.
     def replace(array)
-      # The collection is shorter then page limit? Rejoice, because
-      # then we know that we are on the last page!
-      if total_entries.nil? and length > 0 and length < per_page
-        self.total_entries = offset + length
+      returning super do
+        # The collection is shorter then page limit? Rejoice, because
+        # then we know that we are on the last page!
+        if total_entries.nil? and length > 0 and length < per_page
+          self.total_entries = offset + length
+        end
       end
-      super
     end
-    
   end
 end

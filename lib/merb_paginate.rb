@@ -1,6 +1,6 @@
-# Blatently copied from WillPaginate
-
-require 'merb_paginate/collection' # only require what's necessary at first
+gem 'will_paginate', '>=2.1.0'
+require 'will_paginate'
+# require 'merb_paginate/collection' # only require what's necessary at first
 
 module MerbPaginate
   # You can activate other things on your own...
