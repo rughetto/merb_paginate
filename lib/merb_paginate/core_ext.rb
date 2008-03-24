@@ -1,4 +1,5 @@
 require 'merb_paginate/collection'
+require 'set'
 
 # copied from rails
 def mattr_reader(*syms)
