@@ -5,7 +5,7 @@ require 'merb_paginate/core_ext'
 module MerbPaginate
   # = MerbPaginate view helpers
   #
-  # Currently there is only one view helper: +will_paginate+. It renders the
+  # Currently there is only one view helper: +merb_paginate+. It renders the
   # pagination links for the given collection. The helper itself is lightweight
   # and serves only as a wrapper around link renderer instantiation; the
   # renderer then does all the hard work of generating the HTML.
@@ -71,7 +71,7 @@ module MerbPaginate
     # All options beside listed ones are passed as HTML attributes to the container
     # element for pagination links (the DIV). For example:
     # 
-    #   <%= will_paginate @posts, :id => 'wp_posts' %>
+    #   <%= merb_paginate @posts, :id => 'wp_posts' %>
     #
     # ... will result in:
     #
@@ -79,7 +79,7 @@ module MerbPaginate
     #
     # There is not magic controller inference anynmore. Pass in the variable lazy.
     #
-    def will_paginate(collection, options = {}) # collection is required now! Booya!
+    def merb_paginate(collection, options = {}) # collection is required now! Booya!
       # early exit if there is nothing to render
       return nil unless collection.page_count > 1
       options = options.to_mash.reverse_merge MerbPaginate::ViewHelpers.pagination_options
@@ -91,9 +91,7 @@ module MerbPaginate
     end
   end
 
-  # This class does the heavy lifting of actually building the pagination
-  # links. It is used by +will_paginate+ helper internally, but avoid using it
-  # directly (for now) because its API is not set in stone yet.
+  # Copied mostly from will_paginate, but changed to work with the merb url helpers
   class LinkRenderer
 
     def initialize(collection, options, template)
