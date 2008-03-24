@@ -11,6 +11,3 @@ if const_defined? "Sequel"
 
 if const_defined? "ActiveRecord"
   requre 'merb_paginate/finders/activerecord'; ActiveRecord::Base.class_eval { include MerbPaginate::Finders::Activerecord }
-
-# load in the view helpers
-require 'merb_paginate/view_helpers'
