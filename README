@@ -1,10 +1,10 @@
 merb_paginate
 =============
 
-This is a blatant rip-off of will_paginate to try to bring pagination to merb. 
+Pagination that relies on the awesome code of the will_paginate gem.
 http://errtheblog.com/posts/56-im-paginating-again
 
-All credit goes to those dudes. It's a fantastic plugin, it just is too 
+Lots of credit goes to those dudes. It's a fantastic plugin, it just is too 
 rails centric to use with merb out of the box. A lot of things had to be 
 changed to not rely on the magicness of rails.
 
@@ -23,14 +23,16 @@ Usage
 Using this plugin is like so in init.rb:
 
   dependency 'merb_paginate'
-  MerbPaginate.activate! :finder => :datamapper # require the custom finder for datamapper
-  MerbPaginate.activate! :view_helpers # require the will_paginate view helper
 
-I hope to have a paginate finder for each orm evenutally. (Hint: contribute!)
-
-In the merb style (at least how I see it), it only requires the pagination array collection 
-class at first. You must activate the model paginate finder and the view helper (will_paginate) 
-method yourself (see above).
+Right now, DataMapper is the only support ORM. I hope to have a paginate finder 
+for each orm evenutally. (Hint: contribute!)
 
 
-> End of the worlds worst README.
+
+Note
+----
+
+I am thinking of rewriting this to use the paginator gem, since it is already generic 
+and not tied to any ORM or anything. I am very comfortable with the will_paginate code, 
+so I am biased to use it, but I want to get some feedback about the paginator gem and 
+if it's a good idea?
