@@ -1,6 +1,14 @@
-require 'merb_paginate'
-require 'set'
+require 'merb_paginate/collection'
 
+# copied from rails
+def mattr_reader(*syms)
+  syms.each do |sym|
+    next if sym.is_a?(Hash)
+    class_eval("unless defined? @@\#{sym}\n@@\#{sym} = nil\nend\n\ndef self.\#{sym}\n@@\#{sym}\nend\n\ndef \#{sym}\n@@\#{sym}\nend\n", __FILE__, __LINE__)
+  end
+end
+
+# copied from will_paginate
 unless Hash.instance_methods.include? 'except'
   Hash.class_eval do
     # Returns a new hash without the given keys.
@@ -57,24 +65,18 @@ unless Hash.instance_methods.include? 'rec_merge!'
   end
 end
 
-unless String.instance_methods.include? 'constantize'
-  String.class_eval do
-    def constantize
-      Inflector.constantize(self)
+# copy all the inflector methods over to be methods of string instances
+(Inflector.methods - Object.methods).each do |method_name|
+  unless String.instance_methods.include? method_name
+    String.class_eval do
+      define_method(method_name) do
+        Inflector.send(method_name, self)
+      end
     end
   end
 end
 
-unless String.instance_methods.include? 'camelize'
-  String.class_eval do
-    def camelize
-      Inflector.camelize(self)
-    end
-  end
-end
-
-require 'merb_paginate/collection'
-
+# copied from will_paginate
 unless Array.instance_methods.include? 'paginate'
   # http://www.desimcadam.com/archives/8
   Array.class_eval do
@@ -83,7 +85,7 @@ unless Array.instance_methods.include? 'paginate'
       page = options[:page]
       per_page = options[:per_page]
       
-      MerbPaginate::Collection.create(page || 1, per_page || 30, options[:total_entries] || size) do |pager|
+      WillPaginate::Collection.create(page || 1, per_page || 30, options[:total_entries] || size) do |pager|
         pager.replace self[pager.offset, pager.per_page].to_a
       end
       
