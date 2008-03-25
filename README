@@ -37,14 +37,15 @@ Using this plugin is like so in init.rb:
 
   dependency 'merb_paginate'
 
-Right now, DataMapper is the only supported ORM (Sequel might work, let me know). 
-I hope to have a paginate finder for each orm evenutally. (Hint: contribute!)
+Right now, DataMapper and ActiveRecord work (Sequel might work, let me know). 
+I hope to have a fully speced paginate finder for each orm evenutally. 
+(Hint: contribute!)
 
 Using the view helper is like so:
 
   <%= merb_paginate @posts %>
 
-It is almost exactly like will_paginate, except not as smart about the current controller.
+It is almost exactly like will_paginate, except not as smart about the current collection.
 
 
 
