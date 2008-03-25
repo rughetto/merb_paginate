@@ -33,7 +33,8 @@ module MerbPaginate
       :params       => nil,
       :renderer     => 'MerbPaginate::LinkRenderer',
       :page_links   => true,
-      :container    => true
+      :container    => true,
+      :namespace    => nil
     }
     
     # there is not mattr_accessor here and it's not a big deal to just make these two getter/setter methods for now
@@ -82,7 +83,7 @@ module MerbPaginate
     def merb_paginate(collection, options = {}) # collection is required now! Booya!
       # early exit if there is nothing to render
       return nil unless collection.page_count > 1
-      options = options.to_mash.reverse_merge MerbPaginate::ViewHelpers.pagination_options
+      options = options.to_mash.reverse_merge MerbPaginate::ViewHelpers.pagination_options.to_mash
       # create the renderer instance
       renderer_class = options[:renderer].to_s.constantize
       renderer = renderer_class.new collection, options, self
@@ -190,6 +191,11 @@ module MerbPaginate
     
     def url_options_string(page)
       @template.url(url_options(page))
+      if @options[:namespace].nil?
+        @template.url(url_options(page))
+      else
+        @template.url(@options[:namespace], url_options(page))
+      end
     end
 
   private
