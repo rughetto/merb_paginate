@@ -184,7 +184,7 @@ module MerbPaginate
     def url_options(page)
       options = { param_name => page }
       # page links should preserve GET parameters
-      options = @template.request.params.merge(options).except('action', 'controller', 'format') if @template.request.method == :get
+      options = @template.request.params.merge(options).except('action', 'controller', 'format', *Array(@options[:except])) if @template.request.method == :get
       options.rec_merge!(@options[:params]) if @options[:params]
       return options
     end
