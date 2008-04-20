@@ -5,7 +5,7 @@ require 'spec/rake/spectask'
 
 PLUGIN = "merb_paginate"
 NAME = "merb_paginate"
-GEM_VERSION = "0.0.3"
+GEM_VERSION = "0.0.4"
 AUTHOR = "Nathan Herald"
 EMAIL = "nathan@myobie.com"
 HOMEPAGE = "http://github.com/myobie/merb_paginate"
