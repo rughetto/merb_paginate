@@ -71,16 +71,38 @@ unless Hash.instance_methods.include? 'rec_merge!'
   end
 end
 
-# copy all the inflector methods over to be methods of string instances
-(Inflector.methods - Object.methods).each do |method_name|
-  unless String.instance_methods.include? method_name
-    String.class_eval do
-      define_method(method_name) do
-        Inflector.send(method_name, self)
-      end
-    end
+def String
+  
+  def underscore
+    self.gsub(/::/, '/').
+    gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').
+    gsub(/([a-z\d])([A-Z])/,'\1_\2').
+    tr("-", "_").
+    downcase
   end
+  
+  def constantize
+    unless /\A(?:::)?([A-Z]\w*(?:::[A-Z]\w*)*)\z/ =~ self
+      raise NameError, "#{self.inspect} is not a valid constant name!"
+    end
+
+    Object.module_eval("::#{$1}", __FILE__, __LINE__)
+  end
+  
 end
+
+# We actually don't need the AS Inflector, just 2 methods, that I put above
+#
+# # copy all the inflector methods over to be methods of string instances
+# (Inflector.methods - Object.methods).each do |method_name|
+#   unless String.instance_methods.include? method_name
+#     String.class_eval do
+#       define_method(method_name) do
+#         Inflector.send(method_name, self)
+#       end
+#     end
+#   end
+# end
 
 # copied from will_paginate
 unless Array.instance_methods.include? 'paginate'
