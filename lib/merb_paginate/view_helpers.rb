@@ -256,7 +256,7 @@ module MerbPaginate
     end
 
     def total_pages
-      @collection.page_count
+      @collection.total_pages
     end
 
     def param_name
