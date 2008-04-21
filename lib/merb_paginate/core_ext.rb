@@ -1,5 +1,4 @@
-require 'merb_paginate/collection'
-require 'set'
+require 'will_paginate'
 
 # copied from rails
 def mattr_reader(*syms)
@@ -90,19 +89,6 @@ class String
   end
   
 end
-
-# We actually don't need the AS Inflector, just 2 methods, that I put above
-#
-# # copy all the inflector methods over to be methods of string instances
-# (Inflector.methods - Object.methods).each do |method_name|
-#   unless String.instance_methods.include? method_name
-#     String.class_eval do
-#       define_method(method_name) do
-#         Inflector.send(method_name, self)
-#       end
-#     end
-#   end
-# end
 
 # copied from will_paginate
 unless Array.instance_methods.include? 'paginate'
