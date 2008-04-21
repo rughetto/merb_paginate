@@ -71,7 +71,7 @@ unless Hash.instance_methods.include? 'rec_merge!'
   end
 end
 
-def String
+class String
   
   def underscore
     self.gsub(/::/, '/').
