@@ -1,4 +1,5 @@
-require 'will_paginate'
+require 'set'
+require 'will_paginate/array'
 
 # copied from rails
 def mattr_reader(*syms)
@@ -88,21 +89,4 @@ class String
     Object.module_eval("::#{$1}", __FILE__, __LINE__)
   end
   
-end
-
-# copied from will_paginate
-unless Array.instance_methods.include? 'paginate'
-  # http://www.desimcadam.com/archives/8
-  Array.class_eval do
-    def paginate(options = {})
-      
-      page = options[:page]
-      per_page = options[:per_page]
-      
-      WillPaginate::Collection.create(page || 1, per_page || 30, options[:total_entries] || size) do |pager|
-        pager.replace self[pager.offset, pager.per_page].to_a
-      end
-      
-    end
-  end
 end

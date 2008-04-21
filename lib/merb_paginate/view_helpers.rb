@@ -82,7 +82,8 @@ module MerbPaginate
     #
     def merb_paginate(collection, options = {}) # collection is required now! Booya!
       # early exit if there is nothing to render
-      return nil unless collection.page_count > 1
+      rreturn nil unless collection.total_pages > 1
+      
       options = options.to_mash.reverse_merge MerbPaginate::ViewHelpers.pagination_options.to_mash
       # create the renderer instance
       renderer_class = options[:renderer].to_s.constantize
@@ -90,6 +91,56 @@ module MerbPaginate
       # render HTML for pagination
       renderer.to_html
     end
+    
+    # Wrapper for rendering pagination links at both top and bottom of a block
+    # of content.
+    # 
+    #   <% paginated_section @posts do %>
+    #     <ol id="posts">
+    #       <% for post in @posts %>
+    #         <li> ... </li>
+    #       <% end %>
+    #     </ol>
+    #   <% end %>
+    #
+    # will result in:
+    #
+    #   <div class="pagination"> ... </div>
+    #   <ol id="posts">
+    #     ...
+    #   </ol>
+    #   <div class="pagination"> ... </div>
+    #
+    # Arguments are passed to a <tt>will_paginate</tt> call, so the same options
+    # apply. Don't use the <tt>:id</tt> option; otherwise you'll finish with two
+    # blocks of pagination links sharing the same ID (which is invalid HTML).
+    def paginated_section(*args, &block)
+      pagination = will_paginate(*args).to_s
+      content = pagination + capture(&block) + pagination
+      concat content, block.binding
+    end
+    
+    # Renders a helpful message with numbers of displayed vs. total entries.
+    # You can use this as a blueprint for your own, similar helpers.
+    #
+    #   <%= page_entries_info @posts %>
+    #   #-> Displaying entries 6 - 10 of 26 in total
+    def page_entries_info(collection)
+      if collection.total_pages < 2
+        case collection.size
+        when 0; 'No entries found'
+        when 1; 'Displaying <b>1</b> entry'
+        else;   "Displaying <b>all #{collection.size}</b> entries"
+        end
+      else
+        %{Displaying entries <b>%d&nbsp;-&nbsp;%d</b> of <b>%d</b> in total} % [
+          collection.offset + 1,
+          collection.offset + collection.length,
+          collection.total_entries
+        ]
+      end
+    end
+    
   end
 
   # Copied mostly from will_paginate, but changed to work with the merb url helpers
