@@ -47,14 +47,12 @@ Using the view helper is like so:
 
 It is almost exactly like will_paginate, except not as smart about the current collection.
 
+There are also:
 
+  <% paginated_section @posts do %>
+    ...
+  <% end %>
 
-Note
-----
-I am thinking of rewriting this to use the paginator gem, since it is already generic 
-and not tied to any ORM or anything. I am very comfortable with the will_paginate code, 
-so I am biased to use it, but I want to get some feedback about the paginator gem and 
-if it's a good idea?
+and:
 
-I am pretty happy with how this is working now, but if someone has any better ideas,
-please pass them along. Or better yet, fork and then make it work.
+  <%= page_entries_info @posts %>

@@ -1,6 +1,7 @@
-%ul#posts-list
-  - @posts.each do |post|
-    %li[post]
-      = post.title
+= paginated_section @posts do
+  %ul#posts-list
+    - @posts.each do |post|
+      %li[post]
+        = post.title
 
-= merb_paginate @posts
+= page_entries_info @posts

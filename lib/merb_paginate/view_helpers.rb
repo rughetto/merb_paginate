@@ -115,9 +115,10 @@ module MerbPaginate
     # apply. Don't use the <tt>:id</tt> option; otherwise you'll finish with two
     # blocks of pagination links sharing the same ID (which is invalid HTML).
     def paginated_section(*args, &block)
-      pagination = will_paginate(*args).to_s
+      pagination = merb_paginate(*args).to_s
       content = pagination + capture(&block) + pagination
-      concat content, block.binding
+      #concat content, block.binding
+      content
     end
     
     # Renders a helpful message with numbers of displayed vs. total entries.
