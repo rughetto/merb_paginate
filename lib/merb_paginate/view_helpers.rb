@@ -59,6 +59,7 @@ module MerbPaginate
     # * <tt>:outer_window</tt> -- how many links are around the first and the last page (default: 1)
     # * <tt>:separator</tt> -- string separator for page HTML elements (default: single space)
     # * <tt>:param_name</tt> -- parameter name for page number in URLs (default: <tt>:page</tt>)
+    # * <tt>:named_route</tt> -- optional named route used to generate the pagination url
     # * <tt>:params</tt> -- additional parameters when generating pagination links
     #   (eg. <tt>:controller => "foo", :action => nil</tt>)
     # * <tt>:renderer</tt> -- class name of the link renderer (default: WillPaginate::LinkRenderer)
@@ -82,7 +83,7 @@ module MerbPaginate
     #
     def merb_paginate(collection, options = {}) # collection is required now! Booya!
       # early exit if there is nothing to render
-      rreturn nil unless collection.total_pages > 1
+      return nil unless collection.total_pages > 1
       
       options = options.to_mash.reverse_merge MerbPaginate::ViewHelpers.pagination_options.to_mash
       # create the renderer instance
@@ -235,6 +236,7 @@ module MerbPaginate
     # Would be nice if it was smarter
     def url_options(page)
       options = { param_name => page }
+      
       # page links should preserve GET parameters
       options = @template.request.params.merge(options).except('action', 'controller', 'format', *Array(@options[:except])) if @template.request.method == :get
       options.rec_merge!(@options[:params]) if @options[:params]
@@ -242,11 +244,10 @@ module MerbPaginate
     end
     
     def url_options_string(page)
-      @template.url(url_options(page))
-      if @options[:namespace].nil?
-        @template.url(url_options(page))
+      if @options[:named_route]
+        @template.url(@options[:named_route], url_options(page))
       else
-        @template.url(@options[:namespace], url_options(page))
+        @template.url(url_options(page))
       end
     end
 

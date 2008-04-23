@@ -44,6 +44,10 @@ I hope to have a fully speced paginate finder for each orm evenutally.
 Using the view helper is like so:
 
   <%= merb_paginate @posts %>
+  
+If you need to generate a more complex url you will need to do:
+
+  <%= merb_paginate @comments, :named_route => :post_comments %>
 
 It is almost exactly like will_paginate, except not as smart about the current collection.
 
