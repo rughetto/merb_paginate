@@ -82,7 +82,7 @@ module MerbPaginate
     #
     def merb_paginate(collection, options = {}) # collection is required now! Booya!
       # early exit if there is nothing to render
-      rreturn nil unless collection.total_pages > 1
+      return nil unless collection.total_pages > 1
       
       options = options.to_mash.reverse_merge MerbPaginate::ViewHelpers.pagination_options.to_mash
       # create the renderer instance
