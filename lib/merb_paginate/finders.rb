@@ -4,7 +4,9 @@ require 'merb_paginate/core_ext'
 
 if Object.const_defined? "DataMapper"
   require 'merb_paginate/finders/datamapper'
-  DataMapper::Base.class_eval { include MerbPaginate::Finders::Datamapper }
+  #target = DataMapper.const_defined?('Base') ? 'Base' : 'Resource'
+  DataMapper::Resource.class_eval { include MerbPaginate::Finders::Datamapper }
+  # DataMapper::const_get(target).class_eval { include MerbPaginate::Finders::Datamapper }
 end
 
 if Object.const_defined? "Sequel"
