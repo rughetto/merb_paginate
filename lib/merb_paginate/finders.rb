@@ -15,6 +15,7 @@ if Object.const_defined? "Sequel"
 end
 
 if Object.const_defined? "ActiveRecord"
+  p "merb paginate for AR"
   require 'merb_paginate/finders/activerecord'
   ActiveRecord::Base.class_eval { include MerbPaginate::Finders::Activerecord }
 end
