@@ -35,7 +35,9 @@ Usage
 
 Using this plugin is like so in init.rb:
 
+Merb::BootLoader.after_app_loads do 
   dependency 'merb_paginate'
+end
 
 Right now, DataMapper and ActiveRecord work (Sequel might work, let me know). 
 I hope to have a fully speced paginate finder for each orm evenutally. 
