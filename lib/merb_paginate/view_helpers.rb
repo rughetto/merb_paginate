@@ -59,7 +59,6 @@ module MerbPaginate
     # * <tt>:outer_window</tt> -- how many links are around the first and the last page (default: 1)
     # * <tt>:separator</tt> -- string separator for page HTML elements (default: single space)
     # * <tt>:param_name</tt> -- parameter name for page number in URLs (default: <tt>:page</tt>)
-    # * <tt>:named_route</tt> -- optional named route used to generate the pagination url
     # * <tt>:params</tt> -- additional parameters when generating pagination links
     #   (eg. <tt>:controller => "foo", :action => nil</tt>)
     # * <tt>:renderer</tt> -- class name of the link renderer (default: WillPaginate::LinkRenderer)
@@ -226,29 +225,19 @@ module MerbPaginate
     def page_link_or_span(page, span_class = 'current', text = nil)
       text ||= page.to_s
       if page and page != current_page
-        "<a href=\"#{url_options_string(page)}\">#{text}</a>"
+        "<a href=\"#{url_for_page(page)}\">#{text}</a>"
       else
         "<span class=\"#{span_class}\">#{text}</span>"
       end
     end
 
-    # TODO: I am not sure if I like the way this is working. It will always do /posts/index?page=1 for page one when it could do /
-    # Would be nice if it was smarter
-    def url_options(page)
-      options = { param_name => page }
-      
-      # page links should preserve GET parameters
-      options = @template.request.params.merge(options).except('action', 'controller', 'format', *Array(@options[:except])) if @template.request.method == :get
-      options.rec_merge!(@options[:params]) if @options[:params]
-      return options
-    end
-    
-    def url_options_string(page)
-      if @options[:named_route]
-        @template.url(@options[:named_route], url_options(page))
-      else
-        @template.url(url_options(page))
-      end
+    def url_for_page(page)
+      # Include all query params when constructing new paging URL
+      params = @template.params.to_a.reject{|i| ['namespace', 'controller', 'action', 'format'].include?(i[0]) }
+      params << [param_name, page]
+      params = params.map{|i| i.join('=')}.join('&')
+
+      @template.request.path + "?" + params
     end
 
   private
